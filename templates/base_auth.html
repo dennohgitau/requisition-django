@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% block title %}{% endblock title %}
+    
+   
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+   
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<body class="override">
+    <nav class="navbar navbar-default navbar-light bg-light" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" 
+                style="font-family:sans-serif; font-size: x-large; text-align: centre;
+                 color: rgb(13, 102, 236); ">
+                    User Login</a>
+            </div>
+            
+        </div>
+    </nav>
+   
+    <div class="container">
+        <div class="row">
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+   
+    <footer>
+        <div class="container" >
+            <div class="row well" style="width:64%; margin-left: 204px;">
+                <div class="col-lg-7 col-lg-4">
+                    <p class="m-t"><h4>Copyright &copy <a href="https://mftfulfillmentcentre.com" target="_blank">www.mftfulfillmentcentre.com</a> </p>
+                        <p> 2022 </p>
+                    <p>All Rights Reserved.</h4></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

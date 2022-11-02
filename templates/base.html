@@ -1,0 +1,111 @@
+{% load static %}
+{% load auth_extras %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+
+    {% block style %}
+
+    {% endblock style %}
+    </style>
+    {% block title %}
+    <link rel="icon" href="https://media.geeksforgeeks.org/wp-content/cdn-uploads/gfg_200X200.png" type="image/icon type">
+    
+    {% endblock title %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+<body class="override" >
+    <nav class="navbar navbar-light" style="background-color: #e3f2fd;" role="navigation">
+        <div class="container" style="display: contents; >
+            <div class="navbar-header">
+                <a class="navbar-brand" 
+                style="font-family: cursive;
+                 font-size: 30px;
+                 text-align: centre;
+                 color: rgb(13, 102, 236);" 
+                 href="{% url 'home' %} ">
+                 
+                    Requisition App</a>
+            </div>
+            <div class="user" style="float: center;">
+                {% if request.user|has_group:"Managers" %} 
+                    <div style="display: -webkit-inline-box;"> 
+                        <a class="nav-link active" href="{% url 'manage' %}"><h4 style="font-family: cursive;
+                            font-size: 30px;}">Manage Requisitions</h4>
+                        </a>  
+                        <a href="{% url 'manage' %}" style="float: right;cursor:pointer;" aria-expanded="true" title="You Have {{ count }} New Requisitions">
+                            <i class="far fa-bell" style="font-size: 20px; float: left; color: black"><span class="badge badge-danger">{{ count }}</span>
+                            </i>
+                        </a>
+
+                    </div>                        
+                {% endif %}
+                {% if request.user|has_group:"Employees" %} 
+                    <div style="display: -webkit-inline-box;"> 
+                        <a class="nav-link active" href="{% url 'requisitions_view' %}"><h4 style="font-family: cursive;
+                            font-size: 30px;">My Requisitions</h4>
+                        </a>  
+                        <a href="{% url 'requisitions_view' %}" style="float: right;cursor:pointer;" aria-expanded="true" title="You Have {{ count }} Requisitions">
+                            <i class="far fa-bell" style="font-size: 20px; float: left; color: black"><span class="badge badge-danger">{{ count }}</span>
+                            </i>
+                        </a>
+
+                    </div>                        
+                {% endif %}
+                {% if user.is_superuser %}
+                    <div style="display: -webkit-inline-box;"> 
+                        <a class="nav-link active" href="{% url 'admin_manage' %}"><h4>Manage Requisitions</h4>
+                        </a> 
+                          
+                        <a href="{% url 'manage' %}" style="float: right;cursor:pointer; " aria-expanded="true" title="You Have {{ count }} New Accepted Requisitions">
+                            <i class="far fa-bell" style="font-size: 20px; float: left; color: black"><span class="badge badge-danger">{{ count }}</span>
+                            </i>
+                        </a>
+                        <a class="nav-link active" href="{% url 'all_requisitions' %}" style="margin-left: 60px;"><h4>View All</h4>
+                        </a>
+
+                    </div>                        
+                {% endif %}
+            </div>                
+                <span class="navbar-text" style="font-family: cursive;
+                font-size: 25px;text-align: centre;
+                color: rgb(13, 102, 236); float: right">
+                   Hello {{ request.user.username }}
+                
+                <a  href=" {% url 'logout' %} "> 
+                    <div class="form-group"
+                         style="background-color:#4CAF50 ; /* Red */
+                        border: none;
+                        color: white;
+                        padding: 10px 20px;
+                        text-align: center;
+                        text-decoration: none;
+                        display: inline-block;
+                        font-family: cursive;
+                        font-size: large;
+                        border-radius: 129px;
+                        cursor: pointer;">Logout
+                    </div>
+                </a>
+            </span>
+            </li>
+            
+            </div>
+           
+
+        </div>
+    </nav>
+   
+    <div class="container">
+        
+        {% block content %}{% endblock %}
+        
+    </div>
+
+
+</body>
+</html>
