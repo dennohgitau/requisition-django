@@ -60,7 +60,24 @@ def reject(request):
     id  = request.GET.get("id")
     requisition = Requisition.objects.get(id=id)
     requisition.accepted= False
+    owner = requisition.owner
+    item = requisition.item
+    sent_to = owner.email 
     requisition.save()
+    data={
+        'item': item,
+        'sent_to': sent_to
+
+    }
+    message = get_template('rejected-email.html').render(data)
+    email = EmailMessage(
+        subject= "Requisition Request.",
+        body=message,
+        from_email= settings.EMAIL_HOST_USER,
+        to=[sent_to]
+    )
+    email.content_subtype = "html"
+    EmailThread(email).start()
     return HttpResponse("Rejected")
 
 @login_required(login_url='user_login')
@@ -85,7 +102,7 @@ def approve(request):
                 'price': price,
                 
             }
-        message = get_template('approved_email.html').render(data)
+        message = get_template('approved-email.html').render(data)
         email = EmailMessage(
                 subject= "Requisition Approved.",
                 body=message,
@@ -107,7 +124,24 @@ def not_approve(request):
     requisition.accepted= False
     requisition.approved = False
     requisition.rejected = True
+    owner = requisition.owner
+    item = requisition.item
+    sent_to = owner.email 
     requisition.save()
+    data={
+        'item': item,
+        'sent_to': sent_to
+
+    }
+    message = get_template('rejected-email.html').render(data)
+    email = EmailMessage(
+        subject= "Requisition Request.",
+        body=message,
+        from_email= settings.EMAIL_HOST_USER,
+        to=[sent_to]
+    )
+    email.content_subtype = "html"
+    EmailThread(email).start()
     return HttpResponse("Rejected")
 
 
