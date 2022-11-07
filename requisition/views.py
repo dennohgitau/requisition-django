@@ -222,28 +222,59 @@ def all_requisitions(request):
     page_obj = Paginator.get_page(paginator, page_number)
     all_users = list(User.objects.values())
     names = []
+    ids = []
     for user in all_users:
         name = user.get('username')
+        id = user.get('id')
         names.append(name)
+        ids.append(id)
     context = {
-        'names' : names,
+        'names' : all_users,
         'requisition': requisition,
         'page_obj': page_obj,
     }
    
-    if request.method == 'POST':
-        department = request.POST.get("department")
-        username = request.POST.get("User")
-        date = request.POST.get("date")
-        print(department)
-        print(username)
-        print(date)
-        return render(request, 'display_all.html', context)
-
+    if  request.method == 'GET':
+        department = request.GET.get("department")
+        name = request.GET.get("User")
+        start = request.GET.get("startdate")
+        end = request.GET.get("enddate")
         
-    else:
-        return render(request, 'display_all.html', context)
+        for ida in ids:
+            if name:
+                user_filter = Requisition.objects.filter(owner=name)
+                paginator = Paginator(user_filter, 10 )
+                page_number = request.GET.get('page')
+                user_filtered = Paginator.get_page(paginator, page_number)
+                context_filtered = {
+                    'names' : all_users,
+                    'user_filtered':user_filtered,
+                 }
+                print('first')
+                return render(request, 'display_all.html', context_filtered)
+                
+            else:
+                if start and end:
+                    date_filter = Requisition.objects.filter(sent_date__range=[start, end])
+                    paginator = Paginator(date_filter, 10 )
+                    page_number = request.GET.get('page')
+                    date_filtered = Paginator.get_page(paginator, page_number)
+                    context_filtered = {
+                    'names' : all_users,
+                     }
+                    context_filtered['date_filtered'] = date_filtered
+                    
+                    context['date_filtered'] = date_filtered
+                    print('Second')
+                    return render(request, 'display_all.html', context)
+
+                else: 
+                    print('Second else')            
+                    return render(request, 'display_all.html', context)                  
+            
+
+        else:
+            
+            return render(request, 'display_all.html', context)
 
     
-    
-
